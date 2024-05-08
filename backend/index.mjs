@@ -43,7 +43,7 @@ async function evaluateGuesses() {
   const scores = [];
   for (const guess of guesses) {
     const response = await openai.chat.completions.create({
-      model : 'gpt-3.5-turbo',
+      model : 'gpt-4',
       messages : [ {
         role : "system",
         content : `Evaluate the similarity between "${guess.guess}" and "${
