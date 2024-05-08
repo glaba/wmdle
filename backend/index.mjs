@@ -14,13 +14,10 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(express.static('../frontend'));
 
-const guesses = [];
 let actualActivity = '';
 
-const adminPassword = process.env.ADMIN_PASSWORD;
-
-app.post('/api/guess', (req, res) => {
-  const {name, email, guess} = req.body;
+const guesses = JSON.parse(fs.readFileSync("guesses"));
+function addOrUpdateGuess(name, email, guess, onReceived, onUpdated) {
   let matched =
       guesses.find((e) => { return e.name == name || e.email == email; });
 
@@ -30,23 +27,35 @@ app.post('/api/guess', (req, res) => {
     matched.guess = guess;
 
     console.log(`Updated guess: ${name}, ${email}, ${guess}`);
-    res.status(200).json({message : 'Guess updated!'});
+    onUpdated();
   } else {
     guesses.push({name, email, guess});
     console.log(`Received guess: ${name}, ${email}, ${guess}`);
-    res.status(200).json({message : 'Guess received!'});
+    onReceived();
   }
+
+  fs.writeFileSync("guesses", JSON.stringify(guesses));
+}
+
+app.post('/api/guess', (req, res) => {
+  const {name, email, guess} = req.body;
+  addOrUpdateGuess(
+      name, email, guess,
+      /*onReceived=*/
+      () => { res.status(200).json({message : 'Guess received!'}); },
+      /*onUpdated=*/
+      () => { res.status(200).json({message : 'Guess updated!'}); });
 });
 
 app.post('/api/admin', async (req, res) => {
   const {password, actual} = req.body;
-  if (password === adminPassword) {
+  if (password === process.env.ADMIN_PASSWORD) {
     actualActivity = actual;
     console.log("Evaluating guesses...");
     await evaluateGuesses();
     res.status(200).json({success : true});
   } else {
-    console.log("Received bad adminPassword");
+    console.log("Received bad admin password");
     res.status(401).json({success : false});
   }
 });
