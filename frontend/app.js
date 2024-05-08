@@ -14,6 +14,9 @@ guessForm.addEventListener('submit', async (event) => {
     headers : {'Content-Type' : 'application/json'},
     body : JSON.stringify(data)
   });
+  document.getElementById('name').value = '';
+  document.getElementById('email').value = '';
+  document.getElementById('guess').value = '';
   alert('Your guess has been submitted!');
 });
 
@@ -36,4 +39,4 @@ adminForm.addEventListener('submit', async (event) => {
   } else {
     alert('Incorrect password!');
   }
-});
+});W

@@ -108,7 +108,7 @@ function sendEmail(to, subject, text) {
     auth : {user : process.env.GMAIL_USER, pass : process.env.GMAIL_PASS}
   });
 
-  const mailOptions = {from : process.env.GMAIL_USER, to, subject, text};
+  const mailOptions = {from : process.env.GMAIL_USER, to, subject, text, html: text};
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
