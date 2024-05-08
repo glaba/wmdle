@@ -92,7 +92,7 @@ function sendResults(scores) {
             return result;
           })
           .join('\n\n');
-  const result = start + ad + groupedResults;
+  const result = `<p>` + start + ad + groupedResults + `</p>`;
 
   const emails = new Set();
   for (const score of scores) {
@@ -102,13 +102,13 @@ function sendResults(scores) {
   sendEmail(Array.from(emails), `WMDle #${dayNumber} Results`, result);
 }
 
-function sendEmail(to, subject, text) {
+function sendEmail(to, subject, html) {
   const transporter = nodemailer.createTransport({
     service : 'gmail',
     auth : {user : process.env.GMAIL_USER, pass : process.env.GMAIL_PASS}
   });
 
-  const mailOptions = {from : process.env.GMAIL_USER, to, subject, text, html: text};
+  const mailOptions = {from : process.env.GMAIL_USER, to, subject, html};
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
