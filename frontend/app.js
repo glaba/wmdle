@@ -4,7 +4,7 @@ const guessSubmitButton = document.getElementById('guessSubmitButton');
 
 guessForm.addEventListener('submit', async (event) => {
   event.preventDefault();
-  guessSubmitButton.disabled = true; 
+  guessSubmitButton.disabled = true;
   guessSubmitButton.style.backgroundColor = '#ccc';
   const formData = new FormData(guessForm);
   const data = {
@@ -25,10 +25,12 @@ guessForm.addEventListener('submit', async (event) => {
     document.getElementById('name').value = '';
     document.getElementById('email').value = '';
     document.getElementById('guess').value = '';
-    alert('Your guess has been submitted!');
+    Toastify({text : 'Your guess has been submitted!', duration : 3000})
+        .showToast();
   } catch (error) {
     console.error('Error:', error);
-    alert('BBL Drizzy, BBL Drizzzzyyy');
+    Toastify({text : 'BBL Drizzy, BBL Drizzzzyyy', duration : 3000})
+        .showToast();
   }
 });
 
@@ -46,9 +48,12 @@ adminForm.addEventListener('submit', async (event) => {
   });
   const result = await response.json();
   if (result.success) {
-    alert('Actual activity submitted successfully!');
+    Toastify({
+      text : 'Actual activity submitted successfully!',
+      duration : 3000
+    }).showToast();
     adminForm.reset();
   } else {
-    alert('Incorrect password!');
+    Toastify({text : 'Incorrect password!', duration : 3000}).showToast();
   }
 });
