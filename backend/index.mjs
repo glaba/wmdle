@@ -20,9 +20,21 @@ const adminPassword = process.env.ADMIN_PASSWORD;
 
 app.post('/api/guess', (req, res) => {
   const {name, email, guess} = req.body;
-  guesses.push({name, email, guess});
-  console.log(`Received guess: ${name}, ${email}, ${guess}`);
-  res.status(200).json({message : 'Guess received!'});
+  let matched =
+      guesses.find((e) => { return e.name == name || e.email == email; });
+
+  if (matched) {
+    matched.name = name;
+    matched.email = email;
+    matched.guess = guess;
+
+    console.log(`Updated guess: ${name}, ${email}, ${guess}`);
+    res.status(200).json({message : 'Guess updated!'});
+  } else {
+    guesses.push({name, email, guess});
+    console.log(`Received guess: ${name}, ${email}, ${guess}`);
+    res.status(200).json({message : 'Guess received!'});
+  }
 });
 
 app.post('/api/admin', async (req, res) => {
