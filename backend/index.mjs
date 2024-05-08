@@ -84,20 +84,20 @@ function sendResults(scores) {
   const dayNumber = getDayNumber();
 
   const start =
-      `What is Mahua doing? The answer is... "${actualActivity}"!\n\n`;
+      `What is Mahua doing? The answer is... "${actualActivity}"!<br><br>`;
   const ad =
-      `Don't forget to <a href='http://198.199.83.100:3000/'>share</a> with your friends!!!!!\n\n`;
+      `Don't forget to <a href='http://198.199.83.100:3000/'>share</a> with your friends!!!!!<br><br>`;
   const groupedResults =
       scores
           .map((score) => {
             const greenBoxes = '🟩'.repeat(score.score);
             const blackBoxes = '⬛'.repeat(5 - score.score);
-            const result = `${score.name} guessed "${score.guess}"\n` +
-                           `Wmdle #${dayNumber} ${score.score}/5\n` +
+            const result = `${score.name} guessed "${score.guess}"<br>` +
+                           `Wmdle #${dayNumber} ${score.score}/5<br>` +
                            `${greenBoxes}${blackBoxes}${emojiFor(score.score)}`;
             return result;
           })
-          .join('\n\n');
+          .join('<br><br>');
   const result = `<p>` + start + ad + groupedResults + `</p>`;
 
   const emails = new Set();
