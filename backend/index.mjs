@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 import bodyParser from 'body-parser';
 import express from 'express';
+import * as fs from 'fs';
 import nodemailer from 'nodemailer'
 import OpenAI from 'openai';
 
@@ -57,8 +58,13 @@ async function evaluateGuesses() {
   guesses.length = 0; // Clear guesses for the next round
 }
 
-let count = 2;
-function getDayNumber() { return count++; }
+let count = parseInt(fs.readFileSync("counter"));
+function getDayNumber() {
+  const retval = count;
+  count++;
+  fs.writeFileSync("counter", count.toString());
+  return retval;
+}
 
 function emojiFor(score) {
   if (score < 2) {
