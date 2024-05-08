@@ -39,4 +39,4 @@ adminForm.addEventListener('submit', async (event) => {
   } else {
     alert('Incorrect password!');
   }
-});W
+});
